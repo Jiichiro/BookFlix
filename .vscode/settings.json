@@ -4,13 +4,22 @@
         "hydrate"
     ],
     "emmet.includeLanguages": {
-        "rust": "html",
-        "rs": "html"
+        "rs": "html",
+        "Rust": "html"
     },
     "emmet.syntaxProfiles": {
         "html": {
             "selfClosingStyle": "xhtml"
         }
     },
-    "emmet.triggerExpansionOnTab": true
+    "emmet.triggerExpansionOnTab": true,
+    "rust-analyzer.linkedProjects": [
+        "Cargo.toml"
+    ],
+    "rust-analyzer.showDependenciesExplorer": false,
+    "rust-analyzer.cachePriming.enable": false,
+    "rust-analyzer.cachePriming.numThreads": "physical",
+    "tailwindCSS.includeLanguages": {
+        "Rust": "html"
+    },
 }

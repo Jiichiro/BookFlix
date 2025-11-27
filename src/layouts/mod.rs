@@ -1,1 +1,3 @@
-pub mod homepage_layout;
+mod homepage_layout;
+
+pub use homepage_layout::HomepageLayout;

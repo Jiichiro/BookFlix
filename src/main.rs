@@ -1,36 +1,51 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
-    use axum::{Extension, Router};
+    use axum::{Router, extract::Request, middleware::{Next, from_fn}};
     use leptos::logging::log;
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use perpustakaan::app::*;
-    use sqlx::PgPool;
+    use sqlx::MySqlPool;
     use dotenv::dotenv;
+    use std::sync::Arc;
 
     dotenv().ok();
 
-    let db_pool = PgPool::connect(std::env::var("DATABASE_URL").unwrap().as_str()).await.unwrap();
+    let db_pool = Arc::new(
+        MySqlPool::connect(std::env::var("DATABASE_URL").unwrap().as_str())
+            .await
+            .expect("Failed to connect to the database")
+    );
+    
+    sqlx::migrate!("./migrations")
+        .run(db_pool.as_ref())
+        .await
+        .expect("Failed to run database migrations");
 
     let conf = get_configuration(None).unwrap();
     let addr = conf.leptos_options.site_addr;
     let leptos_options = conf.leptos_options;
-    // Generate the list of routes in your Leptos App
     let routes = generate_route_list(App);
-
 
     let app = Router::new()
         .leptos_routes(&leptos_options, routes, {
             let leptos_options = leptos_options.clone();
             move || shell(leptos_options.clone())
         })
-        .layer(Extension(db_pool.clone()))
+        .layer(from_fn({
+            let db_pool = db_pool.clone();
+            move |mut req: Request, next: Next| {
+                let db_pool = db_pool.clone();
+                async move {
+                    req.extensions_mut().insert(db_pool);
+                    next.run(req).await
+                }
+            }
+        }))
         .fallback(leptos_axum::file_and_error_handler(shell))
         .with_state(leptos_options);
 
-    // run our app with hyper
-    // `axum::Server` is a re-export of `hyper::Server`
     log!("listening on http://{}", &addr);
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
     axum::serve(listener, app.into_make_service())

@@ -15,8 +15,15 @@ leptos_axum = { version = "0.8.0", optional = true }
 tokio = { version = "1", features = ["rt-multi-thread"], optional = true }
 leptos_meta = { version = "0.8.0" }
 wasm-bindgen = { version = "=0.2.105", optional = true }
-sqlx = {version = "0.8.6", features = ["runtime-tokio-native-tls", "postgres"], optional = true}
-dotenv = { version = "0.15.0", optional = true }
+sqlx = {version = "0.8.6", features = ["runtime-tokio-native-tls", "mysql", "migrate"], optional = true}
+dotenv = { version = "0.14.1", optional = true }
+bcrypt = { version = "0.17.1", optional = true }
+jsonwebtoken = { version = "9.2.0", optional = true}
+serde = { version = "1.0.228", optional = true, features = ['derive']}
+serde_json = { version = "1.0.145", optional = true }
+chrono = { version = "0.4.42", optional = true, features = ['serde']}
+tower = { version = "0.5.2", optional = true }
+tower-http = { version = "0.6.7", optional = true }
 
 [features]
 hydrate = [
@@ -30,10 +37,24 @@ ssr = [
     "dep:leptos_axum",
     "dep:sqlx",
     "dep:dotenv",
+    "dep:bcrypt",
+    "dep:jsonwebtoken",
+    "dep:serde",
+    "dep:serde_json",
+    "dep:chrono",
+    "dep:tower",
+    "dep:tower-http",
     "leptos/ssr",
     "leptos_meta/ssr",
     "leptos_router/ssr",
 ]
+bcrypt = ["dep:bcrypt"]
+jsonwebtoken = ["dep:jsonwebtoken"]
+serde = ["dep:serde"]
+serde_json = ["dep:serde_json"]
+chrono = ["dep:chrono"]
+tower = ["dep:tower"]
+tower-http = ["dep:tower-http"]
 
 # Defines a size-optimized profile for the WASM bundle in release mode
 [profile.wasm-release]
@@ -48,11 +69,11 @@ panic = "abort"
 output-name = "perpustakaan"
 
 # The site root folder is where cargo-leptos generate all output. WARNING: all content of this folder will be erased on a rebuild. Use it in your server setup.
-site-root = "site"
+site-root = "target/site"
 
 # The site-root relative folder where all compiled output (JS, WASM and CSS) is written
 # Defaults to pkg
-site-pkg-dir = "includes"
+site-pkg-dir = "pkg"
 
 # [Optional] The source CSS file. If it ends with .sass or .scss then it will be compiled by dart-sass into CSS. The CSS is optimized by Lightning CSS before being written to <site-root>/<site-pkg>/app.css
 style-file = "style/main.scss"
@@ -76,7 +97,7 @@ tailwind-config-file = "tailwind.config.js"
 assets-dir = "public"
 
 # The IP and port (ex: 127.0.0.1:3000) where the server serves the content. Use it in your server setup.
-site-addr = "127.0.0.1:3000"
+site-addr = "127.0.0.1:3030"
 
 # The port to use for automatic reload monitoring
 reload-port = 3001

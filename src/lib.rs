@@ -3,6 +3,7 @@ mod server;
 mod pages;
 mod components;
 mod layouts;
+mod models;
 
 #[cfg(feature = "hydrate")]
 #[wasm_bindgen::prelude::wasm_bindgen]

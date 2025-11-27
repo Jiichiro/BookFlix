@@ -5,8 +5,8 @@ use leptos_router::{
     path
 };
 
-use crate::{components::not_found::NotFound, pages::homepage::HomePage};
-use crate::layouts::homepage_layout::HomepageLayout;
+use crate::pages::{HomePage, Login, NotFound};
+use crate::layouts::HomepageLayout;
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
     view! {
@@ -34,11 +34,12 @@ pub fn App() -> impl IntoView {
     view! {
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
-        <Stylesheet id="leptos" href="/pkg/perpustakaan.css"/>
+        <Stylesheet id="leptos" href="/includes/perpustakaan.css"/>
         // content for this welcome page
         <Router>
             <Routes fallback=NotFound>
-                <ParentRoute path=path!("/") view=HomepageLayout>
+                <Route path=path!("/login") view=Login/>
+                <ParentRoute path=path!("/dash") view=HomepageLayout>
                     <Route path=path!("") view=HomePage/>
                 </ParentRoute>
             </Routes>

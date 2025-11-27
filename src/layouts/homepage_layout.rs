@@ -1,7 +1,7 @@
 use leptos::{*, html::*, prelude::*};
 use leptos_router::components::Outlet;
 
-use crate::components::{footer::Footer, navbar::NavBar};
+use crate::components::{Footer, NavBar};
 
 #[component]
 #[allow(non_snake_case)]
