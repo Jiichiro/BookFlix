@@ -5,7 +5,7 @@ use leptos_router::{
     path
 };
 
-use crate::pages::{HomePage, Login, NotFound};
+use crate::{pages::{HomePage, Login, NotFound}, utils::auth_token_manager::TokenProvider};
 use crate::layouts::HomepageLayout;
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
@@ -36,13 +36,15 @@ pub fn App() -> impl IntoView {
         // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Stylesheet id="leptos" href="/includes/perpustakaan.css"/>
         // content for this welcome page
-        <Router>
-            <Routes fallback=NotFound>
-                <Route path=path!("/login") view=Login/>
-                <ParentRoute path=path!("/dash") view=HomepageLayout>
-                    <Route path=path!("") view=HomePage/>
-                </ParentRoute>
-            </Routes>
-        </Router>
+        <TokenProvider>
+            <Router>
+                <Routes fallback=NotFound>
+                    <Route path=path!("/login") view=Login/>
+                    <ParentRoute path=path!("/dash") view=HomepageLayout>
+                        <Route path=path!("") view=HomePage/>
+                    </ParentRoute>
+                </Routes>
+            </Router>
+        </TokenProvider>
     }
 }

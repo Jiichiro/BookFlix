@@ -1,7 +1,7 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
-    use axum::{Router, extract::Request, middleware::{Next, from_fn}};
+    use axum::{Router, extract::Request, middleware::{self, Next, from_fn}};
     use leptos::logging::log;
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
@@ -9,6 +9,7 @@ async fn main() {
     use sqlx::MySqlPool;
     use dotenv::dotenv;
     use std::sync::Arc;
+    
 
     dotenv().ok();
 
@@ -18,10 +19,14 @@ async fn main() {
             .expect("Failed to connect to the database")
     );
     
-    sqlx::migrate!("./migrations")
-        .run(db_pool.as_ref())
-        .await
-        .expect("Failed to run database migrations");
+    match sqlx::migrate!("./migrations").run(db_pool.as_ref()).await {
+            Ok(_) => {
+                log!("Database migrations applied successfully");
+            }
+            Err(e) => {
+                log!("Error applying database migrations: {}", e);
+            }
+        }
 
     let conf = get_configuration(None).unwrap();
     let addr = conf.leptos_options.site_addr;
@@ -33,6 +38,7 @@ async fn main() {
             let leptos_options = leptos_options.clone();
             move || shell(leptos_options.clone())
         })
+        .layer(middleware::from_fn(perpustakaan::auth_middleware::token_middleware))
         .layer(from_fn({
             let db_pool = db_pool.clone();
             move |mut req: Request, next: Next| {

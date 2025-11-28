@@ -378,10 +378,6 @@
     display: inline-flex;
   }
 
-  .table {
-    display: table;
-  }
-
   .h-6 {
     height: calc(var(--spacing) * 6);
   }

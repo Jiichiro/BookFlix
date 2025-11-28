@@ -18,3 +18,5 @@ Cargo.lock
 .env.dev
 .env.prod
 .env.test
+
+site/

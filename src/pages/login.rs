@@ -1,12 +1,31 @@
-use leptos::prelude::*;
-use leptos_meta::Title;
-use leptos_router::components::Redirect;
-
 use crate::server::auth::Login;
+use leptos::{logging::log, prelude::*};
+use leptos_meta::Title;
 
 #[component]
 pub fn Login() -> impl IntoView {
     let submit = ServerAction::<Login>::new();
+    let token_store = crate::utils::auth_token_manager::use_token_store();
+
+    Effect::new(move |_| {
+        if let Some(response) = submit.value().get() {
+            match response {
+                Ok(token) => {
+                    log!("✓ Login successful!");
+                    log!("✓ Token received: {}", token);
+
+                    // ✅ SIMPAN TOKEN KE TOKENSTORE
+                    token_store.save_token(token);
+                    log!("✓ Token saved to TokenStore");
+                    let navigate = leptos_router::hooks::use_navigate();
+                    navigate("/dash", Default::default());
+                }
+                Err(e) => {
+                    log!("❌ Login failed: {}", e);
+                }
+            }
+        }
+    });
 
     view! {
         <Title text="Masuk - BookFlix"/>
@@ -33,7 +52,7 @@ pub fn Login() -> impl IntoView {
                     submit.value().get().map(|result| {
                         match result {
                           Err(e) => view! { <p class="text-red-500 text-sm">{e.to_string()}</p> }.into_any(),
-                          Ok(_) => view! { <Redirect path="/dash" /> }.into_any()
+                          Ok(_) => view! {}.into_any(),
                         }
                     })
                 }}
@@ -58,9 +77,12 @@ pub fn Login() -> impl IntoView {
 
                 <button
                   type="submit"
+                  disabled=submit.pending()
                   class="w-full bg-red-600 text-white font-semibold py-3 rounded hover:bg-red-700 transition duration-200"
                 >
-                  "Masuk"
+                  {move || {
+                    if submit.pending().get() { "Processing..." } else { "Login" }
+                  }}
                 </button>
 
                 <div class="flex items-center justify-between text-sm">
