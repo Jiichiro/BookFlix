@@ -1,16 +1,60 @@
 .book-card {
-	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
+	overflow: visible;
 }
 
 .book-card:hover {
-	transform: scale(1.05);
+	transform: translateY(-12px);
+}
+
+.book-card img {
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.book-card:hover img {
+	transform: scale(1.03);
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+.book-card::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 70px;
+	background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(168, 85, 247, 0.05));
+	opacity: 0;
+	transition: opacity 0.4s ease;
+	pointer-events: none;
+	border-radius: 0.75rem;
+}
+
+.book-card:hover::after {
+	opacity: 1;
 }
 
 .scroll-container {
-	scrollbar-width: none;
-	-ms-overflow-style: none;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(99, 102, 241, 0.3) rgba(0, 0, 0, 0.05);
 }
 
 .scroll-container::-webkit-scrollbar {
-	display: none;
+	height: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+	background: rgba(0, 0, 0, 0.05);
+	border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+	background: rgba(99, 102, 241, 0.3);
+	border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+	background: rgba(99, 102, 241, 0.5);
 }

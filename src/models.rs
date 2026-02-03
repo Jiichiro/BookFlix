@@ -1,5 +1,5 @@
 #[cfg(feature = "ssr")]
-use serde::{Deserialize, Serialize};
+use sqlx::prelude::FromRow;
 
 #[derive(PartialEq, Eq, Hash, Clone, Debug)]
 pub struct Books {
@@ -9,10 +9,10 @@ pub struct Books {
 }
 
 #[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Claims {
-    pub sub: i64,
-    pub username: String,
-    pub exp: i64,
-    pub iat: i64,
+#[derive(Clone, FromRow)]
+pub struct User {
+    pub name: String,
+    pub role: String,
+    pub email: String,
+    pub fullname: Option<String>
 }

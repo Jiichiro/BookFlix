@@ -20,6 +20,19 @@
     "rust-analyzer.cachePriming.enable": false,
     "rust-analyzer.cachePriming.numThreads": "physical",
     "tailwindCSS.includeLanguages": {
-        "Rust": "html"
+        "rust": "html",
+        "rs": "html",
+        "*.rs": "html"
     },
+    "rust-analyzer.cargo.buildScripts.enable": false,
+    "rust-analyzer.procMacro.enable": false,
+    "files.associations": {
+        "*.rs": "rust"
+    },
+    "editor.quickSuggestions": {
+        "comments": "on",
+        "strings": "on"
+    },
+    "rust-analyzer.inlayHints.chainingHints.enable": false,
+    "rust-analyzer.inlayHints.closingBraceHints.enable": false,
 }

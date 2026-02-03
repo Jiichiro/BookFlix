@@ -29,18 +29,14 @@ pub fn NotFound() -> impl IntoView {
                 <h1
                     class="text-4xl md:text-5xl font-extrabold tracking-tight"
                 >404</h1>
-                <p class="mt-1 text-sm md:text-base opacity-80">{ "Halaman nggak
-                    ketemu — kayak judul yang dihapus." }</p>
+                <p class="mt-1 text-sm md:text-base opacity-80">{ "Halaman tidak ditemukan" }</p>
                 </div>
             </div>
-            <h2 class="text-2xl md:text-3xl font-bold leading-tight">Sepertinya kamu
-                nyasar...</h2>
-            <p class="text-sm md:text-base max-w-prose opacity-80">Kami nggak nemu
-                halaman yang kamu cari. Coba balik ke beranda atau cari film favoritmu.
-                Kalau terus muncul, mungkin link-nya sudah kadaluarsa.</p>
+            <h2 class="text-2xl md:text-3xl font-bold leading-tight">Coba periksa link anda</h2>
+            <p class="text-sm md:text-base max-w-prose opacity-80">{"Kami tidak menemukan buku yang sesuai dengan link anda. Link mungkin sudah kadaluarsa atau tidak ada disistem kami"}</p>
             <div class="flex gap-3 mt-2">
                 <a
-                href="/"
+                href="/dash"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 transition rounded-md font-medium shadow"
                 >Kembali ke Beranda</a>
                 <button

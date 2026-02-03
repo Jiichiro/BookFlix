@@ -3,7 +3,7 @@ use leptos::{*, html::*, prelude::*};
 #[allow(non_snake_case)]
 pub fn Footer() -> impl IntoView {
     view! {
-        <footer class="bg-black bg-opacity-50 py-12 px-8 md:px-16 mt-16 text-white">
+        <footer class="bg-black bg-opacity-50 py-12 px-8 md:px-16 text-white">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <h4 class="font-semibold mb-4">Navigasi</h4>
