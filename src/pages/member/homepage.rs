@@ -11,22 +11,8 @@ struct BooksArgs {
 
 // Renders the home page of your application.
 #[component]
+#[allow(non_snake_case)]
 pub fn HomePage() -> impl IntoView {
-    let token_store = crate::utils::auth_token_manager::use_token_store();
-
-    Effect::new(move |_| {
-        if token_store.has_token() {
-            println!("✓ Token exists, fetching books...");
-            // ✅ TRIGGER SERVER FUNCTION
-            // Token otomatis dikirim di header!
-            // fetch_books.dispatch(());
-            println!("✓ Fetching books from server...");
-        } else {
-            println!("❌ No token, redirecting to login...");
-            let navigate = leptos_router::hooks::use_navigate();
-            navigate("/login", Default::default());
-        }
-    });
 
     let book_list = vec![
         BooksArgs {

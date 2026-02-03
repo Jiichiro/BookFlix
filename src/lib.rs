@@ -4,10 +4,6 @@ mod pages;
 mod components;
 mod layouts;
 mod models;
-mod utils;
-
-#[cfg(feature = "ssr")]
-pub use crate::server::auth_middleware;
 
 #[cfg(feature = "ssr")]
 pub use {
